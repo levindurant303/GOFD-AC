@@ -1,0 +1,96 @@
+name: GOFDAC
+version: 0.2
+main: ac.gofd
+api-version: "1.21"
+description: 高级反作弊系统 - 全面检测和防护
+author: GOFDAC Team
+website: https://github.com/levindurant303/GOFD-AC
+
+# 依赖管理
+depend: []
+softdepend: [ "WorldGuard", "Vault", "ProtocolLib" ]
+
+# 权限节点
+permissions:
+  gofdac.*:
+    description: 所有 GOFDAC 权限
+    children:
+      gofdac.admin: true
+      gofdac.alerts: true
+      gofdac.bypass: true
+      gofdac.debug: true
+      gofdac.stats: true
+
+  gofdac.admin:
+    description: 管理员权限 - 所有管理命令
+    default: op
+
+  gofdac.alerts:
+    description: 接收反作弊警报
+    default: op
+
+  gofdac.bypass:
+    description: 绕过反作弊检测
+    default: op
+
+  gofdac.debug:
+    description: 访问调试信息
+    default: op
+
+  gofdac.stats:
+    description: 查看统计数据
+    default: op
+
+  gofdac.user:
+    description: 基础用户权限
+    default: true
+    children:
+      gofdac.alerts: false
+
+# 命令配置
+commands:
+  gofdac:
+    description: GOFDAC 反作弊系统主命令
+    usage: /<command> [reload|stats|alerts|reset|debug|performance|modules|test]
+    permission: gofdac.admin
+    permission-message: "§c你没有权限使用此命令！"
+    aliases: [ "ac", "anticheat" ]
+
+  acalerts:
+    description: 切换反作弊警报显示
+    usage: /<command>
+    permission: gofdac.alerts
+    permission-message: "§c你没有权限使用此命令！"
+
+  acdebug:
+    description: 切换调试模式
+    usage: /<command>
+    permission: gofdac.debug
+    permission-message: "§c你没有权限使用此命令！"
+
+# 加载器配置
+load: POSTWORLD
+loadbefore: []
+database: false
+
+# 库文件
+libraries:
+  - "net.kyori:adventure-api:4.17.0"
+  - "net.kyori:adventure-platform-bukkit:4.3.3"
+
+# 额外配置
+prefix: GOFDAC
+authors: [ "GOFDAC Team" ]
+contributors: []
+
+# 事件优先级
+events:
+  PlayerMoveEvent: MONITOR
+  EntityDamageByEntityEvent: MONITOR
+  PlayerInteractEvent: MONITOR
+  AsyncPlayerChatEvent: MONITOR
+  BlockBreakEvent: MONITOR
+  BlockPlaceEvent: MONITOR
+  InventoryClickEvent: MONITOR
+  ProjectileLaunchEvent: MONITOR
+  PlayerQuitEvent: MONITOR
